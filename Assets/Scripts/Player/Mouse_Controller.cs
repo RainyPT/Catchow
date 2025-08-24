@@ -1,0 +1,38 @@
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+[RequireComponent(typeof(CharacterController))]
+public class PlayerControllerInputSystem : MonoBehaviour
+{
+    public float mouse_sens = 100f;
+    public GameObject player_body;
+    private Transform head, body;
+    public Camera fpv;
+    private float x_rotation=0f;
+    void Start()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        head= player_body.transform.Find("Head");
+        if (fpv != null && head != null)
+        {
+            // Parent camera to the head
+            fpv.transform.SetParent(head);
+            fpv.transform.localPosition = new Vector3(0f, 0f, 0.5f);
+            fpv.transform.localRotation = Quaternion.identity;
+        }
+    }
+
+    void Update()
+    {
+        float mouse_x = Input.GetAxis("Mouse X") * mouse_sens * Time.deltaTime;
+        float mouse_y = Input.GetAxis("Mouse Y") * mouse_sens * Time.deltaTime;
+
+        x_rotation -= mouse_y;
+        x_rotation = Mathf.Clamp(x_rotation ,- 70f, 50f);
+
+        head.rotation = Quaternion.Euler(x_rotation, player_body.transform.eulerAngles.y, 0f);
+
+        player_body.transform.Rotate(Vector3.up * mouse_x);
+
+    }
+}
