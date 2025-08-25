@@ -18,7 +18,6 @@ public class Moviment : NetworkBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
-        isRunning.OnValueChanged += OnRunningChanged;
     }
     void Update()
     {
@@ -49,6 +48,7 @@ public class Moviment : NetworkBehaviour
         bool running = move.magnitude > 0.1f;
         if (isRunning.Value != running)
         {
+            Debug.Log(running);
             UpdateRunningServerRpc(running);
         }
 
