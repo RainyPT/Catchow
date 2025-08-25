@@ -6,23 +6,25 @@ public class Moviment : NetworkBehaviour
     public CharacterController characterController;
     public float speed = 12f;
     public Transform player_body;
-    public float gravity=-9.81f;
+    public float gravity = -9.81f;
     public float jumpheight = 3f;
     Vector3 velocity;
     public Transform ground_check;
-    public float ground_distance=0.1f;
+    public float ground_distance = 0.1f;
     public LayerMask ground_mask;
     private bool isGrounded;
     private Animator animator;
+    private NetworkVariable<bool> isRunning = new NetworkVariable<bool>(false);
     void Start()
     {
         animator = GetComponent<Animator>();
+        isRunning.OnValueChanged += OnRunningChanged;
     }
     void Update()
     {
         if (!IsOwner) return;
 
-        
+
         isGrounded = Physics.CheckSphere(ground_check.position, ground_distance, ground_mask);
         if (isGrounded && velocity.y < 0)
         {
@@ -42,14 +44,22 @@ public class Moviment : NetworkBehaviour
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
         Vector3 move = player_body.right * x + player_body.forward * z;
-        characterController.Move(move* speed*Time.deltaTime);
-        
-        if(move.magnitude > 0.1f) {
-            animator.SetBool("isRunning", true);
-        }
-        else
+        characterController.Move(move * speed * Time.deltaTime);
+
+        bool running = move.magnitude > 0.1f;
+        if (isRunning.Value != running)
         {
-            animator.SetBool("isRunning", false);
+            isRunning.Value = running;
+        }
+
+        animator.SetBool("isRunning", running);
+    }
+    
+    private void OnRunningChanged(bool previous, bool current)
+    {
+        if (!IsOwner)
+        {
+            animator.SetBool("isRunning", current);
         }
     }
 }
