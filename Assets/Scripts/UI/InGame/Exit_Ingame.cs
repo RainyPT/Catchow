@@ -16,6 +16,7 @@ public class Exit_Ingame : MonoBehaviour
         if (NetworkManager.Singleton != null)
         {
             NetworkManager.Singleton.Shutdown();
+            Destroy(NetworkManager.Singleton.gameObject);
         }
 
         // Reset timescale (important if paused)
