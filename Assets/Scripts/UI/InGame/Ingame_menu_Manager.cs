@@ -1,11 +1,12 @@
 using UnityEngine;
 using Unity.Netcode;
+using System.Xml;
 
 public class Ingame_menu_Manager : MonoBehaviour
 {
     public static bool isOpen = false;
-    public GameObject canvas;
-
+    public GameObject main;
+    public GameObject loadingText;
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -16,6 +17,7 @@ public class Ingame_menu_Manager : MonoBehaviour
 
     void ToggleMenu()
     {
+        
         isOpen = !isOpen;
         if (isOpen) {
             Cursor.lockState = CursorLockMode.None;
@@ -26,7 +28,7 @@ public class Ingame_menu_Manager : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
         }
 
-        canvas.SetActive(isOpen);
+        main.SetActive(isOpen);
     }
 
 

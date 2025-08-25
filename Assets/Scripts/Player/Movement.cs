@@ -18,7 +18,6 @@ public class Moviment : NetworkBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
-        isRunning.OnValueChanged += OnRunningChanged;
     }
     void Update()
     {
@@ -47,6 +46,7 @@ public class Moviment : NetworkBehaviour
         characterController.Move(move * speed * Time.deltaTime);
 
         bool running = move.magnitude > 0.1f;
+
         if (isRunning.Value != running)
         {
             UpdateRunningServerRpc(running);
@@ -58,6 +58,6 @@ public class Moviment : NetworkBehaviour
     [ServerRpc]
     private void UpdateRunningServerRpc(bool running)
     {
-        isRunning.Value = running; // server writes the value
+        isRunning.Value = running;
     }
 }

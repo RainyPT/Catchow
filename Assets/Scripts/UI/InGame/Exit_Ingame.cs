@@ -20,7 +20,7 @@ public class Exit_Ingame : MonoBehaviour
         }
 
         Time.timeScale = 1f;
-
-        SceneManager.LoadScene("Menu");
+        Cursor.lockState = CursorLockMode.None;
+        SceneManager.LoadScene("Menu", LoadSceneMode.Single);
     }
 }

@@ -316,7 +316,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1761364846
+  GlobalObjectIdHash: 3799091115
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -369,7 +369,6 @@ MonoBehaviour:
   ground_mask:
     serializedVersion: 2
     m_Bits: 8
-  animator: {fileID: 108151493012022481}
 --- !u!114 &-7425033765131311154
 MonoBehaviour:
   m_ObjectHideFlags: 0
