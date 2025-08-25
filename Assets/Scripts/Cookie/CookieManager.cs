@@ -23,6 +23,7 @@ public class CookieManager : MonoBehaviour
     private void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Player"))
         {
+            RoundManager.Instance.AddScore();
             Destroy(gameObject);
         }    
     }
