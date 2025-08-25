@@ -34399,6 +34399,7 @@ MonoBehaviour:
   PreyPrefab: {fileID: 3975132879006422896, guid: 221e0bf3d1081ac419e30e6ab77e4a5b, type: 3}
   SpawnsPrey: {fileID: 864189940}
   SpawnsHunter: {fileID: 260087700}
+  LoadingCamera: {fileID: 877076618}
 --- !u!4 &1109712215
 Transform:
   m_ObjectHideFlags: 0
