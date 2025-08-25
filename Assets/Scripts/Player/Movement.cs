@@ -13,6 +13,7 @@ public class Moviment : NetworkBehaviour
     public float ground_distance=0.1f;
     public LayerMask ground_mask;
     private bool isGrounded;
+    public Animator animator;
     void Update()
     {
         if (!IsOwner) return;
@@ -38,5 +39,13 @@ public class Moviment : NetworkBehaviour
         float z = Input.GetAxis("Vertical");
         Vector3 move = player_body.right * x + player_body.forward * z;
         characterController.Move(move* speed*Time.deltaTime);
+        
+        if(move.magnitude > 0.1f) {
+            animator.SetBool("isRunning", true);
+        }
+        else
+        {
+            animator.SetBool("isRunning", false);
+        }
     }
 }
