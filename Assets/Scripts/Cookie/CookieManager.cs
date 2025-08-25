@@ -6,7 +6,7 @@ public class CookieManager : MonoBehaviour
     private float currentY;
     void Start()
     {
-
+        
     }
 
     void Update()
