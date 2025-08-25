@@ -11,12 +11,8 @@ public class PlayerSpawner : MonoBehaviour
 
     private void OnEnable()
     {
+        if (!NetworkManager.Singleton.IsServer) return;
         NetworkManager.Singleton.OnClientConnectedCallback += HandleClientConnected;
-    }
-
-    private void OnDisable()
-    {
-        NetworkManager.Singleton.OnClientConnectedCallback -= HandleClientConnected;
     }
 
     private void HandleClientConnected(ulong clientId)
