@@ -222,7 +222,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4269662539964182355
 Transform:
   m_ObjectHideFlags: 0
@@ -249,9 +249,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1625353038547020888}
   - component: {fileID: 4785500006299451660}
+  - component: {fileID: 6065728726151416436}
   - component: {fileID: 5278127284700403999}
   - component: {fileID: 8479585614449878568}
-  - component: {fileID: 6065728726151416436}
   - component: {fileID: -7425033765131311154}
   m_Layer: 0
   m_Name: Player
@@ -303,43 +303,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5278127284700403999
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3975132879006422896}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8079e22ea5c03e49be1d50f9e888c51, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  mouse_sens: 100
-  player_body: {fileID: 1487891163413448451}
-  fpv: {fileID: 7194492950379633065}
---- !u!114 &8479585614449878568
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3975132879006422896}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f843e1be3bfa1b445ba6fcc01a5714d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Moviment
-  characterController: {fileID: 4785500006299451660}
-  speed: 5
-  player_body: {fileID: 6435510985429767836}
-  gravity: -18
-  jumpheight: 1
-  ground_check: {fileID: 474764936250184134}
-  ground_distance: 0.1
-  ground_mask:
-    serializedVersion: 2
-    m_Bits: 8
 --- !u!114 &6065728726151416436
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -365,6 +328,46 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
+--- !u!114 &5278127284700403999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3975132879006422896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8079e22ea5c03e49be1d50f9e888c51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  ShowTopMostFoldoutHeaderGroup: 1
+  mouse_sens: 100
+  player_body: {fileID: 1487891163413448451}
+  fpv: {fileID: 7194492950379633065}
+  Cameras: {fileID: 3684406088782123275}
+--- !u!114 &8479585614449878568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3975132879006422896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f843e1be3bfa1b445ba6fcc01a5714d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Moviment
+  ShowTopMostFoldoutHeaderGroup: 1
+  characterController: {fileID: 4785500006299451660}
+  speed: 5
+  player_body: {fileID: 6435510985429767836}
+  gravity: -18
+  jumpheight: 1
+  ground_check: {fileID: 474764936250184134}
+  ground_distance: 0.1
+  ground_mask:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!114 &-7425033765131311154
 MonoBehaviour:
   m_ObjectHideFlags: 0

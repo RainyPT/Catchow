@@ -1,6 +1,7 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class Moviment : MonoBehaviour
+public class Moviment : NetworkBehaviour
 {
     public CharacterController characterController;
     public float speed = 12f;
@@ -15,6 +16,7 @@ public class Moviment : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!IsOwner) return;
         isGrounded = Physics.CheckSphere(ground_check.position, ground_distance, ground_mask);
         if (isGrounded && velocity.y < 0)
         {

@@ -1,16 +1,22 @@
+using System.Globalization;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
-public class PlayerControllerInputSystem : MonoBehaviour
+public class PlayerControllerInputSystem : NetworkBehaviour
 {
     public float mouse_sens = 100f;
     public GameObject player_body;
     private Transform head, body;
     public Camera fpv;
     private float x_rotation=0f;
+    public GameObject Cameras;
     void Start()
     {
+        if (!IsOwner) return;
+
+        if(IsOwner) Cameras.SetActive(true);
         Cursor.lockState = CursorLockMode.Locked;
         head= player_body.transform.Find("Head");
         if (fpv != null && head != null)
@@ -24,6 +30,8 @@ public class PlayerControllerInputSystem : MonoBehaviour
 
     void Update()
     {
+        if (!IsOwner) return;
+
         float mouse_x = Input.GetAxis("Mouse X") * mouse_sens * Time.deltaTime;
         float mouse_y = Input.GetAxis("Mouse Y") * mouse_sens * Time.deltaTime;
 
