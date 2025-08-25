@@ -49,17 +49,15 @@ public class Moviment : NetworkBehaviour
         bool running = move.magnitude > 0.1f;
         if (isRunning.Value != running)
         {
-            isRunning.Value = running;
+            UpdateRunningServerRpc(running);
         }
 
         animator.SetBool("isRunning", running);
     }
-    
-    private void OnRunningChanged(bool previous, bool current)
+
+    [ServerRpc]
+    private void UpdateRunningServerRpc(bool running)
     {
-        if (!IsOwner)
-        {
-            animator.SetBool("isRunning", current);
-        }
+        isRunning.Value = running; // server writes the value
     }
 }
