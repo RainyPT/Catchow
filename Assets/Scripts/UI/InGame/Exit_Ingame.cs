@@ -19,10 +19,8 @@ public class Exit_Ingame : MonoBehaviour
             Destroy(NetworkManager.Singleton.gameObject);
         }
 
-        // Reset timescale (important if paused)
         Time.timeScale = 1f;
 
-        // Load main menu scene
         SceneManager.LoadScene("Menu");
     }
 }

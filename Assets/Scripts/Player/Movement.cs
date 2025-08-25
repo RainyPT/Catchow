@@ -13,7 +13,6 @@ public class Moviment : NetworkBehaviour
     public float ground_distance=0.1f;
     public LayerMask ground_mask;
     private bool isGrounded;
-    private Ingame_menu_Manager igm;
     void Update()
     {
         if (!IsOwner) return;
