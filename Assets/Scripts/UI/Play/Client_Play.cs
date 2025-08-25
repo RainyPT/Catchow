@@ -13,6 +13,9 @@ public class Client_Play : MonoBehaviour
     // Update is called once per frame
     void JoinGame()
     {
-        NetworkManager.Singleton.StartClient();
+        if (NetworkManager.Singleton.StartClient())
+        {
+            Debug.Log("Client started, connecting to server...");
+        }
     }
 }

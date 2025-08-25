@@ -13,10 +13,9 @@ public class Moviment : NetworkBehaviour
     public float ground_distance=0.1f;
     public LayerMask ground_mask;
     private bool isGrounded;
-    // Update is called once per frame
+    private Ingame_menu_Manager igm;
     void Update()
     {
-        Debug.Log(IsOwner);
         if (!IsOwner) return;
 
         isGrounded = Physics.CheckSphere(ground_check.position, ground_distance, ground_mask);

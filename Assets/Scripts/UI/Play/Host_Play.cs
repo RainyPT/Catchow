@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Unity.Netcode;
 using Unity.Networking;
+using UnityEngine.SceneManagement;
 
 public class Host_Play : MonoBehaviour
 {
@@ -14,6 +15,10 @@ public class Host_Play : MonoBehaviour
     // Update is called once per frame
     void HostGame()
     {
-        NetworkManager.Singleton.StartHost();
+        if (NetworkManager.Singleton.StartHost())
+        {
+            Debug.Log("Host started.");
+            NetworkManager.Singleton.SceneManager.LoadScene("DevScene", LoadSceneMode.Single);
+        }
     }
 }
