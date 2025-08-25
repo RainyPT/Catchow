@@ -7,6 +7,7 @@ public class PlayerSpawner : MonoBehaviour
     public GameObject PreyPrefab;
     public Transform SpawnsPrey;
     public Transform SpawnsHunter;
+    public Camera LoadingCamera;
 
     private void OnEnable()
     {
@@ -20,6 +21,8 @@ public class PlayerSpawner : MonoBehaviour
 
     private void HandleClientConnected(ulong clientId)
     {
+        LoadingCamera.enabled = false;
+
         if (!NetworkManager.Singleton.IsServer) return;
 
         Transform spawnprey = SpawnsPrey.GetChild(Random.Range(0, SpawnsPrey.childCount));
