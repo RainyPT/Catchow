@@ -253,6 +253,7 @@ GameObject:
   - component: {fileID: 5278127284700403999}
   - component: {fileID: 8479585614449878568}
   - component: {fileID: -7425033765131311154}
+  - component: {fileID: 1152725586353925105}
   m_Layer: 0
   m_Name: Prey
   m_TagString: Player
@@ -368,6 +369,7 @@ MonoBehaviour:
   ground_mask:
     serializedVersion: 2
     m_Bits: 8
+  animator: {fileID: 0}
 --- !u!114 &-7425033765131311154
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -414,6 +416,28 @@ MonoBehaviour:
   SwitchTransformSpaceWhenParented: 0
   Interpolate: 1
   SlerpPosition: 0
+--- !u!95 &1152725586353925105
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3975132879006422896}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 9a4afbe6776c850449b0493144c14be5, type: 3}
+  m_Controller: {fileID: 9100000, guid: 7a44407240dac33449d25b50623d3b58, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &4878584050811035812
 GameObject:
   m_ObjectHideFlags: 0
