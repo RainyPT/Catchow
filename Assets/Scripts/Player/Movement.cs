@@ -16,7 +16,9 @@ public class Moviment : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(IsOwner);
         if (!IsOwner) return;
+
         isGrounded = Physics.CheckSphere(ground_check.position, ground_distance, ground_mask);
         if (isGrounded && velocity.y < 0)
         {

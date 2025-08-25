@@ -40,7 +40,7 @@ public class PlayerControllerInputSystem : NetworkBehaviour
 
         head.rotation = Quaternion.Euler(x_rotation, player_body.transform.eulerAngles.y, 0f);
 
-        player_body.transform.Rotate(Vector3.up * mouse_x);
+        transform.Rotate(Vector3.up * mouse_x);
 
     }
 }
