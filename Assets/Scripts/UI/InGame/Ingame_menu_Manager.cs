@@ -3,7 +3,7 @@ using Unity.Netcode;
 
 public class Ingame_menu_Manager : MonoBehaviour
 {
-    private bool isOpen = false;
+    public static bool isOpen = false;
     public GameObject canvas;
 
     void Update()
@@ -20,6 +20,10 @@ public class Ingame_menu_Manager : MonoBehaviour
         if (isOpen) {
             Cursor.lockState = CursorLockMode.None;
 
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
         }
 
         canvas.SetActive(isOpen);

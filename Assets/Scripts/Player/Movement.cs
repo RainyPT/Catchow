@@ -17,21 +17,26 @@ public class Moviment : NetworkBehaviour
     {
         if (!IsOwner) return;
 
+        
         isGrounded = Physics.CheckSphere(ground_check.position, ground_distance, ground_mask);
         if (isGrounded && velocity.y < 0)
         {
             velocity.y = -2f;
         }
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
-        //transform.localRotation = player_body.localRotation;
-        Vector3 move = player_body.right * x + player_body.forward * z;
-        characterController.Move(move* speed*Time.deltaTime);
 
-        if (Input.GetButtonDown("Jump") && isGrounded) {
-                velocity.y = Mathf.Sqrt(jumpheight * -2f * gravity);
+        if (Input.GetButtonDown("Jump") && isGrounded)
+        {
+            velocity.y = Mathf.Sqrt(jumpheight * -2f * gravity);
         }
         velocity.y += gravity * Time.deltaTime;
-        characterController.Move(velocity*Time.deltaTime);
+
+        characterController.Move(velocity * Time.deltaTime);
+
+        if (Ingame_menu_Manager.isOpen) return;
+
+        float x = Input.GetAxis("Horizontal");
+        float z = Input.GetAxis("Vertical");
+        Vector3 move = player_body.right * x + player_body.forward * z;
+        characterController.Move(move* speed*Time.deltaTime);
     }
 }

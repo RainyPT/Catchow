@@ -1,5 +1,6 @@
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerSpawner : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class PlayerSpawner : MonoBehaviour
     {
         if (!NetworkManager.Singleton.IsServer) return;
         NetworkManager.Singleton.OnClientConnectedCallback += HandleClientConnected;
+        NetworkManager.Singleton.OnClientDisconnectCallback += HandleClientDisconnected;
     }
 
     private void HandleClientConnected(ulong clientId)
@@ -25,10 +27,23 @@ public class PlayerSpawner : MonoBehaviour
         Transform spawnhunter = SpawnsHunter.GetChild(Random.Range(0, SpawnsHunter.childCount));
 
 
-        GameObject Hunter = Instantiate(PreyPrefab, spawnhunter.position, spawnhunter.rotation);
+        GameObject Hunter = Instantiate(HunterPrefab, spawnhunter.position, spawnhunter.rotation);
         Hunter.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId, true);
 
-        GameObject Prey = Instantiate(HunterPrefab, spawnprey.position, spawnprey.rotation);
+        GameObject Prey = Instantiate(PreyPrefab, spawnprey.position, spawnprey.rotation);
         Prey.GetComponent<NetworkObject>().Spawn();
+    }
+
+    private void HandleClientDisconnected(ulong clientId)
+    {
+        if (NetworkManager.Singleton != null)
+        {
+            NetworkManager.Singleton.Shutdown();
+            Destroy(NetworkManager.Singleton.gameObject);
+        }
+
+        Time.timeScale = 1f;
+
+        SceneManager.LoadScene("Menu");
     }
 }

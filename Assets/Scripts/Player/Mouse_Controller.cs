@@ -33,6 +33,7 @@ public class PlayerControllerInputSystem : NetworkBehaviour
     {
         
         if (!IsOwner) return;
+        if (Ingame_menu_Manager.isOpen) return;
         float mouse_x = Input.GetAxis("Mouse X") * mouse_sens * Time.deltaTime;
         float mouse_y = Input.GetAxis("Mouse Y") * mouse_sens * Time.deltaTime;
 
