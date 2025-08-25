@@ -13,7 +13,11 @@ public class Moviment : NetworkBehaviour
     public float ground_distance=0.1f;
     public LayerMask ground_mask;
     private bool isGrounded;
-    public Animator animator;
+    private Animator animator;
+    void Start()
+    {
+        animator = GetComponent<Animator>();
+    }
     void Update()
     {
         if (!IsOwner) return;
