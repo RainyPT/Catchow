@@ -21,10 +21,11 @@ public class CookieManager : MonoBehaviour
     }
     
     private void OnTriggerEnter(Collider other) {
-        if (other.CompareTag("Player"))
+        if (!IsServer) return;
+        if (other.CompareTag("Prey"))
         {
             RoundManager.Instance.AddScore();
-            Destroy(gameObject);
-        }    
+            GetComponent<NetworkObject>().Despawn(true);
+        }
     }
 }

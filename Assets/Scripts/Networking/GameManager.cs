@@ -45,6 +45,7 @@ public class GameManager : MonoBehaviour
         {
             playerManager.SpawnClient(clientId, "hunter");
             playerManager.Spawn("prey");
+            playerManager.SpawnCookies();
         }
     }
     private void HandleClientDisconnected(ulong clientId)
