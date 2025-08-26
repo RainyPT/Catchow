@@ -1,6 +1,7 @@
 using UnityEngine;
+using Unity.Netcode;
 
-public class CookieManager : MonoBehaviour
+public class CookieManager : NetworkBehaviour
 {
     [SerializeField] private float rotationSpeed = 50f; // Rotation Speed (editable in inspector)
     private float currentY;
@@ -21,10 +22,11 @@ public class CookieManager : MonoBehaviour
     }
     
     private void OnTriggerEnter(Collider other) {
-        if (other.CompareTag("Player"))
+        if (!IsServer) return;
+        if (other.CompareTag("Prey"))
         {
             RoundManager.Instance.AddScore();
-            Destroy(gameObject);
-        }    
+            GetComponent<NetworkObject>().Despawn(true);
+        }
     }
 }

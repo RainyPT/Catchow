@@ -40,6 +40,7 @@ public class GameManager : MonoBehaviour
         playerManager.SpawnServerOwner(roles[0]);
 
         playerManager.SpawnClient(clientId, roles[1]);
+        playerManager.SpawnCookies();
     }
 private void HandleClientDisconnected(ulong clientId)
     {
