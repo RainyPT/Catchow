@@ -2,7 +2,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+public class GameManager : NetworkBehaviour
 {
     
     
@@ -13,8 +13,6 @@ public class GameManager : MonoBehaviour
 
     private void OnEnable()
     {
-        NetworkManager.Singleton.OnClientDisconnectCallback += HandleClientDisconnected;
-        Debug.Log("OnEnable isHost: " + NetworkManager.Singleton.IsHost);
         if (!NetworkManager.Singleton.IsHost) return;
         LoadingCanvas.transform.Find("LoadingText").gameObject.SetActive(true);
         
@@ -52,7 +50,7 @@ public class GameManager : MonoBehaviour
         playerManager.SpawnClient(clientId, roles[1]);
         playerManager.SpawnCookies();
     }
-private void HandleClientDisconnected(ulong clientId)
+    private void HandleClientDisconnected(ulong clientId)
     {
         if (NetworkManager.Singleton != null)
         {

@@ -49,7 +49,6 @@ public class Moviment : NetworkBehaviour
 
         if (isRunning.Value != running)
         {
-            Debug.Log(running);
             UpdateRunningServerRpc(running);
         }
 

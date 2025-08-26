@@ -12,15 +12,15 @@ public class PlayerManager : MonoBehaviour
     public void SpawnClient(ulong clientId, string role)
     {
         Transform spawnprey = SpawnsPrey.GetChild(Random.Range(0, SpawnsPrey.childCount));
-        GameObject Prey = Instantiate(PreyPrefab, spawnprey.position, Quaternion.identity);
-        Prey.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId,true);
+        GameObject Prey = Instantiate(PreyPrefab, spawnprey.position, spawnprey.rotation);
+        Prey.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId, true);
     }
 
 
     public void SpawnServerOwner(ulong hostId,string role)
     {
         Transform spawnhunter = SpawnsHunter.GetChild(Random.Range(0, SpawnsHunter.childCount));
-        GameObject Hunter = Instantiate(HunterPrefab, spawnhunter.position, Quaternion.identity);
+        GameObject Hunter = Instantiate(HunterPrefab, spawnhunter.position, spawnhunter.rotation);
         Hunter.GetComponent<NetworkObject>().SpawnAsPlayerObject(hostId,true);
     }
 
@@ -29,7 +29,7 @@ public class PlayerManager : MonoBehaviour
         for (int i = 0; i < SpawnsCookies.childCount; i++)
         {
             Transform spawn = SpawnsCookies.GetChild(i);
-            GameObject cookie = Instantiate(CookiePrefab, spawn.position, spawn.rotation);
+            GameObject cookie = Instantiate(CookiePrefab, spawn.position, CookiePrefab.transform.rotation);
             cookie.GetComponent<NetworkObject>().Spawn(true);
         }
     }
