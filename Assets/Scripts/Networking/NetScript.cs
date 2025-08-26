@@ -7,10 +7,10 @@ public class NetScript : MonoBehaviour
     {
         if (FindObjectsByType<NetworkManager>(FindObjectsSortMode.None).Length > 1)
         {
-            Destroy(gameObject); // Kill duplicates
+            Destroy(gameObject);
             return;
         }
 
-        DontDestroyOnLoad(gameObject); // Persist between scenes
+        DontDestroyOnLoad(gameObject);
     }
 }

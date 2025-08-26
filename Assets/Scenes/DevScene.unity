@@ -9663,7 +9663,7 @@ GameObject:
   - component: {fileID: 260087700}
   m_Layer: 0
   m_Name: HunterSpawnPoints
-  m_TagString: Untagged
+  m_TagString: SpawnArrays
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -25823,7 +25823,7 @@ GameObject:
   - component: {fileID: 864189940}
   m_Layer: 0
   m_Name: PreySpawnPoints
-  m_TagString: Untagged
+  m_TagString: SpawnArrays
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -34688,6 +34688,7 @@ GameObject:
   - component: {fileID: 1109712215}
   - component: {fileID: 1109712214}
   - component: {fileID: 1109712216}
+  - component: {fileID: 1109712217}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -34742,6 +34743,18 @@ MonoBehaviour:
   HunterPrefab: {fileID: 3975132879006422896, guid: cc82a33a9a05a98499a817578b06154c, type: 3}
   PreyPrefab: {fileID: 3975132879006422896, guid: 221e0bf3d1081ac419e30e6ab77e4a5b, type: 3}
   CookiePrefab: {fileID: 3115310242005207066, guid: cbcd780bf6f0e90489d4fb448a93bb4d, type: 3}
+--- !u!114 &1109712217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1109712213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91bda10428abcd24593f6d3f74c3e444, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RoundManager
 --- !u!1001 &1111535840
 PrefabInstance:
   m_ObjectHideFlags: 0

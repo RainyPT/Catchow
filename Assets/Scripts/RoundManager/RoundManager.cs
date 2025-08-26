@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class RoundManager : MonoBehaviour
 {
-    public static RoundManager Instance; // Singleton reference
+    public static RoundManager Instance;
     private int score = 0;
     private void Awake()
     {

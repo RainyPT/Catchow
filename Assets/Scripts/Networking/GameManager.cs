@@ -1,7 +1,6 @@
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,36 +8,47 @@ public class GameManager : MonoBehaviour
     
     public Camera LoadingCamera;
     public Canvas LoadingCanvas;
-    private PlayerManager playerManager;
 
     private string[] roles = { "prey", "hunter" };
 
     private void OnEnable()
     {
-        if (!NetworkManager.Singleton.IsServer) return;
+        NetworkManager.Singleton.OnClientDisconnectCallback += HandleClientDisconnected;
+        Debug.Log("OnEnable isHost: " + NetworkManager.Singleton.IsHost);
+        if (!NetworkManager.Singleton.IsHost) return;
         LoadingCanvas.transform.Find("LoadingText").gameObject.SetActive(true);
-        playerManager = GetComponent<PlayerManager>();
+        
 
         NetworkManager.Singleton.OnClientConnectedCallback += HandleClientConnected;
-        NetworkManager.Singleton.OnClientDisconnectCallback += HandleClientDisconnected;
+        
     }
-
+    private void OnDisable()
+    {
+        if (NetworkManager.Singleton == null) return;
+        NetworkManager.Singleton.OnClientDisconnectCallback -= HandleClientDisconnected;
+        if (!NetworkManager.Singleton.IsHost) return;
+        NetworkManager.Singleton.OnClientConnectedCallback -= HandleClientConnected;
+        
+    }
     private void HandleClientConnected(ulong clientId)
     {
-
-        LoadingCamera.enabled = false;
-        LoadingCanvas.transform.Find("LoadingText").gameObject.SetActive(false);
-
-        if (!NetworkManager.Singleton.IsServer) return;
-
-
+        Debug.Log("HandleClientConnected isHost: " + NetworkManager.Singleton.IsHost);
+        ulong hostId = NetworkManager.Singleton.LocalClientId;
+        if (clientId == NetworkManager.Singleton.LocalClientId)
+        {
+            return;
+        }
+        if(LoadingCamera != null) {
+            LoadingCamera.enabled = false;
+        }
+        if (LoadingCanvas != null)
+        {
+            LoadingCanvas.transform.Find("LoadingText").gameObject.SetActive(false);
+        }
 
         //Activate choose perk funct
-
-        int randIndex = Random.Range(0, roles.Length);
-
-        playerManager.SpawnServerOwner(roles[0]);
-
+        PlayerManager playerManager = GetComponent<PlayerManager>();
+        playerManager.SpawnServerOwner(hostId,roles[0]);
         playerManager.SpawnClient(clientId, roles[1]);
         playerManager.SpawnCookies();
     }
