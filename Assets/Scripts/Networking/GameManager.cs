@@ -1,6 +1,7 @@
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
@@ -24,15 +25,28 @@ public class GameManager : MonoBehaviour
     private void HandleClientConnected(ulong clientId)
     {
 
+        StartCoroutine(HandleLoading(clientId));
+    }
+    private IEnumerator HandleLoading(ulong clientId)
+    {
+        // Show loading visuals
+        LoadingCamera.enabled = true;
+        LoadingCanvas.transform.Find("LoadingText").gameObject.SetActive(true);
+
+        // Orbit for ~30 seconds
+        yield return new WaitForSeconds(30f);
+
+        // Hide loading visuals
         LoadingCamera.enabled = false;
         LoadingCanvas.transform.Find("LoadingText").gameObject.SetActive(false);
 
-        //Server Ops
-        if (!NetworkManager.Singleton.IsServer) return;
-        playerManager.SpawnClient(clientId, "hunter");
-        playerManager.Spawn("prey");
+        // --- Server ops after loading ---
+        if (NetworkManager.Singleton.IsServer)
+        {
+            playerManager.SpawnClient(clientId, "hunter");
+            playerManager.Spawn("prey");
+        }
     }
-
     private void HandleClientDisconnected(ulong clientId)
     {
         if (NetworkManager.Singleton != null)
