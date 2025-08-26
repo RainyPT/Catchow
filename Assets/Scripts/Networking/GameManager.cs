@@ -10,7 +10,8 @@ public class GameManager : MonoBehaviour
     public Camera LoadingCamera;
     public Canvas LoadingCanvas;
     private PlayerManager playerManager;
-    
+
+    private string[] roles = { "prey", "hunter" };
 
     private void OnEnable()
     {
@@ -25,29 +26,22 @@ public class GameManager : MonoBehaviour
     private void HandleClientConnected(ulong clientId)
     {
 
-        StartCoroutine(HandleLoading(clientId));
-    }
-    private IEnumerator HandleLoading(ulong clientId)
-    {
-        // Show loading visuals
-        LoadingCamera.enabled = true;
-        LoadingCanvas.transform.Find("LoadingText").gameObject.SetActive(true);
-
-        // Orbit for ~30 seconds
-        yield return new WaitForSeconds(30f);
-
-        // Hide loading visuals
         LoadingCamera.enabled = false;
         LoadingCanvas.transform.Find("LoadingText").gameObject.SetActive(false);
 
-        // --- Server ops after loading ---
-        if (NetworkManager.Singleton.IsServer)
-        {
-            playerManager.SpawnClient(clientId, "hunter");
-            playerManager.Spawn("prey");
-        }
+        if (!NetworkManager.Singleton.IsServer) return;
+
+
+
+        //Activate choose perk funct
+
+        int randIndex = Random.Range(0, roles.Length);
+
+        playerManager.SpawnServerOwner(roles[0]);
+
+        playerManager.SpawnClient(clientId, roles[1]);
     }
-    private void HandleClientDisconnected(ulong clientId)
+private void HandleClientDisconnected(ulong clientId)
     {
         if (NetworkManager.Singleton != null)
         {

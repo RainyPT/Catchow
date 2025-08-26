@@ -21,7 +21,7 @@ public class PlayerManager : MonoBehaviour
         Prey.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId, true);
     }
 
-    public void Spawn(string role)
+    public void SpawnServerOwner(string role)
     {
         if (role == "hunter")
         {
