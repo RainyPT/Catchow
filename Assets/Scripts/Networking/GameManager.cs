@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class GameManager : MonoBehaviour
+public class GameManager : NetworkBehaviour
 {
     
     
@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
 
     private void OnEnable()
     {
-        if (!NetworkManager.Singleton.IsServer) return;
+        if (!NetworkManager.Singleton.IsHost) return;
         LoadingCanvas.transform.Find("LoadingText").gameObject.SetActive(true);
         playerManager = GetComponent<PlayerManager>();
 
@@ -29,20 +29,22 @@ public class GameManager : MonoBehaviour
         LoadingCamera.enabled = false;
         LoadingCanvas.transform.Find("LoadingText").gameObject.SetActive(false);
 
-        if (!NetworkManager.Singleton.IsServer) return;
+        ulong hostId = NetworkManager.Singleton.LocalClientId;
 
-
+        if (!NetworkManager.Singleton.IsHost) return;
+        if (clientId == hostId)
+            return;
 
         //Activate choose perk funct
 
         int randIndex = Random.Range(0, roles.Length);
+        
 
-        playerManager.SpawnServerOwner(roles[0]);
-
+        playerManager.SpawnServerOwner(hostId,roles[0]);
         playerManager.SpawnClient(clientId, roles[1]);
         playerManager.SpawnCookies();
     }
-private void HandleClientDisconnected(ulong clientId)
+    private void HandleClientDisconnected(ulong clientId)
     {
         if (NetworkManager.Singleton != null)
         {

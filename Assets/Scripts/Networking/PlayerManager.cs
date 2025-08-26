@@ -13,30 +13,17 @@ public class PlayerManager : MonoBehaviour
 
     public void SpawnClient(ulong clientId, string role)
     {
-        if (role == "hunter")
-        {
-            Transform spawnhunter = SpawnsHunter.GetChild(Random.Range(0, SpawnsHunter.childCount));
-            GameObject Hunter = Instantiate(HunterPrefab, spawnhunter.position, spawnhunter.rotation);
-            Hunter.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId, true);
-            return;
-        }
         Transform spawnprey = SpawnsPrey.GetChild(Random.Range(0, SpawnsPrey.childCount));
-        GameObject Prey = Instantiate(HunterPrefab, spawnprey.position, spawnprey.rotation);
+        GameObject Prey = Instantiate(PreyPrefab, spawnprey.position, spawnprey.rotation);
         Prey.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId, true);
     }
 
-    public void SpawnServerOwner(string role)
+
+    public void SpawnServerOwner(ulong hostId,string role)
     {
-        if (role == "hunter")
-        {
-            Transform spawnhunter = SpawnsHunter.GetChild(Random.Range(0, SpawnsHunter.childCount));
-            GameObject Hunter = Instantiate(HunterPrefab, spawnhunter.position, spawnhunter.rotation);
-            Hunter.GetComponent<NetworkObject>().Spawn(true);
-            return;
-        }
-        Transform spawnprey = SpawnsPrey.GetChild(Random.Range(0, SpawnsPrey.childCount));
-        GameObject Prey = Instantiate(HunterPrefab, spawnprey.position, spawnprey.rotation);
-        Prey.GetComponent<NetworkObject>().Spawn(true);
+        Transform spawnhunter = SpawnsHunter.GetChild(Random.Range(0, SpawnsHunter.childCount));
+        GameObject Hunter = Instantiate(HunterPrefab, spawnhunter.position, spawnhunter.rotation);
+        Hunter.GetComponent<NetworkObject>().SpawnAsPlayerObject(hostId,true);
     }
 
     public void SpawnCookies()
@@ -44,7 +31,7 @@ public class PlayerManager : MonoBehaviour
         for (int i = 0; i < SpawnsCookies.childCount; i++)
         {
             Transform spawn = SpawnsCookies.GetChild(i);
-            GameObject cookie = Instantiate(CookiePrefab, spawn.position, spawn.rotation);
+            GameObject cookie = Instantiate(CookiePrefab, spawn.position, CookiePrefab.transform.rotation);
             cookie.GetComponent<NetworkObject>().Spawn(true);
         }
     }
