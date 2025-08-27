@@ -4,7 +4,9 @@ using UnityEngine;
 public class Movement : NetworkBehaviour
 {
     public CharacterController characterController;
-    public float speed = 12f;
+    public NetworkVariable<float> speed = new NetworkVariable<float>(5.0f,
+    NetworkVariableReadPermission.Everyone,
+    NetworkVariableWritePermission.Owner);
     public Transform player_body;
     public float gravity = -9.81f;
     public float jumpheight = 3f;
@@ -43,13 +45,13 @@ public class Movement : NetworkBehaviour
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
         Vector3 move = player_body.right * x + player_body.forward * z;
-        characterController.Move(move * speed * Time.deltaTime);
+        characterController.Move(move * speed.Value * Time.deltaTime);
 
         bool running = move.magnitude > 0.1f;
         if (running) UpdateRunningServerRpc();
     }
 
-    [ServerRpc]
+    [Rpc(SendTo.ClientsAndHost)]
     private void UpdateRunningServerRpc()
     {
         if (!GetComponent<AudioSource>().isPlaying)

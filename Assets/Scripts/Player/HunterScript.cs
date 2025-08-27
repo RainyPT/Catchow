@@ -30,15 +30,12 @@ public class HunterScript : NetworkBehaviour
 
     }
 
-    [ServerRpc]
-    private void ShootServerRpc(ServerRpcParams rpcParams = default)
+    [Rpc(SendTo.Server)]
+    private void ShootServerRpc()
     {
         if (hunter_bullets.Value <= 0) return;
         hunter_bullets.Value--;
 
-        ulong shooterId = rpcParams.Receive.SenderClientId;
-
-        // Perform raycast from shooter's camera
         Vector3 origin = playercamera.transform.position;
         Vector3 direction = playercamera.transform.forward;
 

@@ -9,6 +9,7 @@ TagManager:
   - SpawnArrays
   - Ammo
   - Cookie
+  - Extraction
   layers:
   - Default
   - TransparentFX
