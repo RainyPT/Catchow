@@ -936,10 +936,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerScript
   ShowTopMostFoldoutHeaderGroup: 1
-  _moveSpeed: 100
-  _crouchSpeed: 20
-  _jumpHeight: 40
-  _gravity: -50
+  _moveSpeed: 5
+  _crouchSpeed: 2
+  _jumpHeight: 1
+  _gravity: -18
   _mouseSensitivity: 500
   _playerCamera: {fileID: 8358115102434161851}
 --- !u!114 &1882160970662659907
