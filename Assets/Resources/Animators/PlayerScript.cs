@@ -32,14 +32,14 @@ public class PlayerScript : NetworkBehaviour
 
     void Start()
     {
+        _characterAnimator = GetComponent<Animator>();
         if (!IsOwner) return;
-        if (IsOwner) _playerCamera.gameObject.SetActive(true);
+        _playerCamera.gameObject.SetActive(true);
         // Getting Components from our character
         _groundCheck = transform.GetChild(2);
         _playerCrosshair = transform.GetChild(5);
         _playerBodyAsset = transform.GetChild(0);
         _characterController = GetComponent<CharacterController>();
-        _characterAnimator = GetComponent<Animator>();
 
         // Locking the mouse at the middle and make it invisible, not just fly everywhere like we would be in the Desktop per example
         Cursor.lockState = CursorLockMode.Locked;
