@@ -39,6 +39,9 @@ public class PlayerController : MonoBehaviour
     private Vector3 originalCenter;
     public float crouchHeight = 1.0f;
 
+    [SerializeField] private Transform aimTarget; // the empty GameObject on your character
+    [SerializeField] private float aimDistance = 10f;
+
     private void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -120,11 +123,24 @@ public class PlayerController : MonoBehaviour
         float mouseX = Mouse.current.delta.x.ReadValue() * mouseSensitivity * Time.deltaTime;
         float mouseY = Mouse.current.delta.y.ReadValue() * mouseSensitivity * Time.deltaTime;
 
+        // vertical rotation
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -75f, 75f);
 
+        // rotate camera (pitch)
         playerCamera.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+
+        // rotate player body (yaw)
         transform.Rotate(Vector3.up * mouseX);
+
+        // position aim target in front of the camera,
+        // but since it's part of the character, keep it attached
+        if (aimTarget != null)
+        {
+            Vector3 localTargetPos = playerCamera.transform.localPosition + Vector3.forward * aimDistance;
+            aimTarget.localPosition = localTargetPos;
+            aimTarget.localRotation = Quaternion.identity;
+        }
     }
 
     private void UpdateCameraOffset()
