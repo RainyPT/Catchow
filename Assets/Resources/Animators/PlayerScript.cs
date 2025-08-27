@@ -4,22 +4,22 @@ using Unity.Netcode;
 public class PlayerScript : NetworkBehaviour
 {
     [Header("Movement Settings")]
-    [SerializeField]private float _moveSpeed;
-    [SerializeField]private float _crouchSpeed;
+    [SerializeField] private float _moveSpeed;
+    [SerializeField] private float _crouchSpeed;
     private float _currentSpeed;
     [SerializeField] private float _jumpHeight;
-    [SerializeField]private float _gravity;
+    [SerializeField] private float _gravity;
     private Transform _groundCheck;
     private Vector3 _velocity;
     private bool _isCrouching;
     private float _crouchHeight;
 
     [Header("Mouse Settings")]
-    [SerializeField]private float _mouseSensitivity;
+    [SerializeField] private float _mouseSensitivity;
     private float _cameraPitch;
 
     [Header("Camera Settings")]
-    [SerializeField]private Camera _playerCamera;
+    [SerializeField] private Camera _playerCamera;
     private Transform _playerCrosshair;
     private float _crosshairDistance;
 
@@ -53,18 +53,20 @@ public class PlayerScript : NetworkBehaviour
 
     void Update()
     {
-        //if (!IsOwner) return;
+        if (!IsOwner) return;
 
         // Movement
         float moveX = Input.GetAxis("Horizontal");
         float moveZ = Input.GetAxis("Vertical");
-        if (Ingame_menu_Manager.isOpen) {
+        if (Ingame_menu_Manager.isOpen)
+        {
             moveX = 0f;
             moveZ = 0f;
         }
         Vector3 move = transform.right * moveX + transform.forward * moveZ;
         bool isMoving = moveX != 0f || moveZ != 0f;
-        _characterAnimator.SetBool("isWalking", isMoving && !_isCrouching);
+        bool isWalking = isMoving && !_isCrouching;
+        UpdateWalkingRpc(isWalking);
 
         // Jumping
         if (_characterController.isGrounded && !Ingame_menu_Manager.isOpen)
@@ -74,14 +76,14 @@ public class PlayerScript : NetworkBehaviour
 
             if (Input.GetButtonDown("Jump"))
             {
-                _characterAnimator.SetTrigger("Jump");
+                JumpRpc();
                 _velocity.y = Mathf.Sqrt(_jumpHeight * -2f * _gravity); // Get the jumping going
             }
         }
-            else
-            {
-                _velocity.y += _gravity * Time.deltaTime;
-            }
+        else
+        {
+            _velocity.y += _gravity * Time.deltaTime;
+        }
 
         // Crouching
         if (Input.GetKey(KeyCode.LeftControl) && !Ingame_menu_Manager.isOpen)
@@ -100,7 +102,7 @@ public class PlayerScript : NetworkBehaviour
             _isCrouching = false;
         }
 
-        _characterAnimator.SetBool("isCrouched", _isCrouching);
+        UpdateCrouchRpc(_isCrouching);
 
         _currentSpeed = _isCrouching ? _crouchSpeed : _moveSpeed;
 
@@ -110,13 +112,14 @@ public class PlayerScript : NetworkBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha1) && !Ingame_menu_Manager.isOpen) // "1" key on the keyboard
         {
-            _characterAnimator.SetTrigger("Action");
+            BreakDanceRpc();
         }
 
         // Mouse
         float mouseX = Input.GetAxis("Mouse X") * _mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * _mouseSensitivity * Time.deltaTime;
-        if (Ingame_menu_Manager.isOpen) {
+        if (Ingame_menu_Manager.isOpen)
+        {
             mouseX = 0f;
             mouseY = 0f;
         }
@@ -128,5 +131,29 @@ public class PlayerScript : NetworkBehaviour
 
         Vector3 crosshairPos = _playerCamera.transform.position + _playerCamera.transform.forward * _crosshairDistance;
         _playerCrosshair.position = crosshairPos; // Crosshair movement
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    private void UpdateWalkingRpc(bool isWalking)
+    {
+        _characterAnimator.SetBool("isWalking", isWalking);
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    private void JumpRpc()
+    {
+        _characterAnimator.SetTrigger("Jump");
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    private void UpdateCrouchRpc(bool _isCrouching)
+    {
+        _characterAnimator.SetBool("isCrouched", _isCrouching);
+    }
+    
+    [Rpc(SendTo.ClientsAndHost)]
+    private void BreakDanceRpc()
+    {
+        _characterAnimator.SetTrigger("Action");
     }
 }
