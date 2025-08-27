@@ -36055,7 +36055,6 @@ GameObject:
   - component: {fileID: 1109712218}
   - component: {fileID: 1109712214}
   - component: {fileID: 1109712216}
-  - component: {fileID: 1109712217}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -36112,21 +36111,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   SpawnsPrey: {fileID: 864189940}
   SpawnsHunter: {fileID: 260087700}
-  HunterPrefab: {fileID: 3975132879006422896, guid: cc82a33a9a05a98499a817578b06154c, type: 3}
-  PreyPrefab: {fileID: 3975132879006422896, guid: 221e0bf3d1081ac419e30e6ab77e4a5b, type: 3}
---- !u!114 &1109712217
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1109712213}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91bda10428abcd24593f6d3f74c3e444, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RoundManager
-  score: {m_NetworkBehaviour: {fileID: 0}, m_InternalNetworkManager: {fileID: 0}, <HasBeenInitialized>k__BackingField: 0, m_IsDirty: 0, <Name>k__BackingField: , InternalWritePerm: 0, NetworkUpdaterCheck: 0, m_InternalValue: 0, m_LastInternalValue: 0, m_PreviousValue: 0, m_HasPreviousValue: 0, m_IsDisposed: 0}
+  HunterPrefab: {fileID: 6973066730586901921, guid: eeaaa2dddef1f304a96cdcd6cd7e44e3, type: 3}
+  PreyPrefab: {fileID: 7073534812774108470, guid: 03c9d794b9bb33e4287ea86c9f325f95, type: 3}
 --- !u!114 &1109712218
 MonoBehaviour:
   m_ObjectHideFlags: 0
