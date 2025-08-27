@@ -14,7 +14,6 @@ public class Movement : NetworkBehaviour
     public LayerMask ground_mask;
     private bool isGrounded;
     private Animator animator;
-    private NetworkVariable<bool> isRunning = new NetworkVariable<bool>(false);
 
     void Start()
     {
@@ -22,8 +21,8 @@ public class Movement : NetworkBehaviour
     }
     void Update()
     {
-        if (!IsOwner) return;
 
+        if (!IsOwner) return;
 
         isGrounded = Physics.CheckSphere(ground_check.position, ground_distance, ground_mask);
         if (isGrounded && velocity.y < 0)
@@ -47,18 +46,15 @@ public class Movement : NetworkBehaviour
         characterController.Move(move * speed * Time.deltaTime);
 
         bool running = move.magnitude > 0.1f;
-
-        if (isRunning.Value != running)
-        {
-            UpdateRunningServerRpc(running);
-        }
-
-        animator.SetBool("isRunning", running);
+        if (running) UpdateRunningServerRpc();
     }
 
     [ServerRpc]
-    private void UpdateRunningServerRpc(bool running)
+    private void UpdateRunningServerRpc()
     {
-        isRunning.Value = running;
+        if (!GetComponent<AudioSource>().isPlaying)
+        {
+            GetComponent<AudioSource>().Play();
+        }
     }
 }
