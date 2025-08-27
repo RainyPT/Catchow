@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Movement Settings")]
     public float moveSpeed = 6f;
+    public float crouchSpeed = 3f;
     public float jumpHeight = 2f;
     public float gravity = -9.81f;
 
@@ -32,6 +33,11 @@ public class PlayerController : MonoBehaviour
     private float xRotation = 0f;
     private Vector3 cameraInitialLocalPos;
     private bool isPlayingAction = false;
+    // crouch handling
+    private bool isCrouching = false;
+    private float originalHeight;
+    private Vector3 originalCenter;
+    public float crouchHeight = 1.0f;
 
     private void Start()
     {
@@ -47,6 +53,8 @@ public class PlayerController : MonoBehaviour
             cameraInitialLocalPos = playerCamera.transform.localPosition;
             playerCamera.transform.localPosition = cameraInitialLocalPos + cameraOffset;
         } */
+        originalHeight = controller.height;
+        originalCenter = controller.center;
     }
 
     private void Update()
@@ -54,6 +62,7 @@ public class PlayerController : MonoBehaviour
         HandleLook();
         HandleMovement();
         //UpdateCameraOffset();
+        HandleCrouch();
         HandleActionAnimation();
     }
 
@@ -64,7 +73,7 @@ public class PlayerController : MonoBehaviour
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
         if (isGrounded && velocity.y < 0)
             velocity.y = -2f;
-
+            
         // Input (WASD)
         Vector2 input = Keyboard.current != null
             ? new Vector2(
@@ -72,30 +81,36 @@ public class PlayerController : MonoBehaviour
                 (Keyboard.current.wKey.isPressed ? 1 : 0) - (Keyboard.current.sKey.isPressed ? 1 : 0)
             )
             : Vector2.zero;
-        
+
         // Cancel action animation if player moves
         if (isPlayingAction && input.magnitude > 0.1f)
         {
             isPlayingAction = false;
             animator.ResetTrigger("Action");
-            animator.SetBool("isRunning", true);
+            animator.SetBool("isWalking", true);
         }
 
+        float currentSpeed = isCrouching ? crouchSpeed : moveSpeed;
+
         Vector3 move = transform.right * input.x + transform.forward * input.y;
-        controller.Move(move * moveSpeed * Time.deltaTime);
+        controller.Move(move * currentSpeed * Time.deltaTime);
 
         // Animation: running only if moving on X/Z
         bool isMoving = move.magnitude > 0.1f;
         if (!isPlayingAction) // only set running if not doing action
-            animator.SetBool("isRunning", isMoving);
+            animator.SetBool("isWalking", isMoving && !isCrouching);
 
         // Jump
         if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame && isGrounded)
+        {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            animator.SetTrigger("Jump");
+        }
 
         // Apply gravity
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
+
     }
 
     private void HandleLook()
@@ -136,6 +151,32 @@ public class PlayerController : MonoBehaviour
             if (!state.IsName("Action")) // assumes the action returns to idle
             {
                 isPlayingAction = false;
+            }
+        }
+    }
+    
+    private void HandleCrouch()
+    {
+        if (Keyboard.current == null) return;
+
+        if (Keyboard.current.leftCtrlKey.isPressed)
+        {
+            if (!isCrouching)
+            {
+                isCrouching = true;
+                controller.height = crouchHeight; // shrink collider
+                controller.center = new Vector3(0, (float)0.6, 0);
+                animator.SetBool("isCrouched", true);
+            }
+        }
+        else
+        {
+            if (isCrouching)
+            {
+                isCrouching = false;
+                controller.height = originalHeight; // reset collider
+                controller.center = originalCenter;
+                animator.SetBool("isCrouched", false);
             }
         }
     }
