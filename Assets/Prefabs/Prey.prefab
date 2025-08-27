@@ -454,6 +454,8 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   prey_health:
     m_InternalValue: 5
+  prey_score:
+    m_InternalValue: 0
 --- !u!82 &1382392611615351277
 AudioSource:
   m_ObjectHideFlags: 0
@@ -476,7 +478,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 50
+  MaxDistance: 10
   Pan2D: 0
   rolloffMode: 1
   BypassEffects: 0
