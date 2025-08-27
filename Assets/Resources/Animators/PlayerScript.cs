@@ -4,7 +4,9 @@ using Unity.Netcode;
 public class PlayerScript : NetworkBehaviour
 {
     [Header("Movement Settings")]
-    [SerializeField] private float _moveSpeed;
+    public NetworkVariable<float> _moveSpeed = new NetworkVariable<float>(5.0f,
+    NetworkVariableReadPermission.Everyone,
+    NetworkVariableWritePermission.Owner);
     [SerializeField] private float _crouchSpeed;
     private float _currentSpeed;
     [SerializeField] private float _jumpHeight;
@@ -106,7 +108,7 @@ public class PlayerScript : NetworkBehaviour
 
         UpdateCrouchRpc(_isCrouching);
 
-        _currentSpeed = _isCrouching ? _crouchSpeed : _moveSpeed;
+        _currentSpeed = _isCrouching ? _crouchSpeed : _moveSpeed.Value;
 
         Vector3 finalMove = move * _currentSpeed + new Vector3(0, _velocity.y, 0); // End result of inputs
 
@@ -133,12 +135,23 @@ public class PlayerScript : NetworkBehaviour
 
         Vector3 crosshairPos = _playerCamera.transform.position + _playerCamera.transform.forward * _crosshairDistance;
         _playerCrosshair.position = crosshairPos; // Crosshair movement
+
+
     }
+
 
     [Rpc(SendTo.ClientsAndHost)]
     private void UpdateWalkingRpc(bool isWalking)
     {
         _characterAnimator.SetBool("isWalking", isWalking);
+        if (isWalking)
+        {
+            GetComponent<AudioSource>().Play();
+            return;
+        }
+
+        GetComponent<AudioSource>().Stop();
+
     }
 
     [Rpc(SendTo.ClientsAndHost)]
