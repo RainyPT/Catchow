@@ -1,9 +1,14 @@
+using Unity.Netcode;
 using UnityEngine;
 
 public class RoundManager : MonoBehaviour
 {
     public static RoundManager Instance;
-    private int score = 0;
+    public NetworkVariable<int> score = new NetworkVariable<int>(
+    0,
+    NetworkVariableReadPermission.Owner,
+    NetworkVariableWritePermission.Server
+    );
     private void Awake()
     {
         if (Instance == null)
@@ -15,15 +20,17 @@ public class RoundManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
-    public void AddScore()
+    void Start()
     {
-        score += 1;
-        Debug.Log("Score: " + score);
+        score.OnValueChanged += (oldValue, newValue) =>
+        {
+            Ingame_menu_Manager.igm_instance.UpdateCookieCountUI(newValue);
+        };
     }
 
-    public int GetScore()
+    [ServerRpc]
+    public void AddScoreServerRpc(ServerRpcParams rpcParams = default)
     {
-        return score;
+        score.Value += 1;
     }
 }

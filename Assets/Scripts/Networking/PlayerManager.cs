@@ -9,6 +9,7 @@ public class PlayerManager : MonoBehaviour
     public GameObject HunterPrefab;
     public GameObject PreyPrefab;
     public GameObject CookiePrefab;
+    public GameObject AmmoCratePrefab;
     public void SpawnClient(ulong clientId, string role)
     {
         Transform spawnprey = SpawnsPrey.GetChild(Random.Range(0, SpawnsPrey.childCount));
@@ -24,13 +25,43 @@ public class PlayerManager : MonoBehaviour
         Hunter.GetComponent<NetworkObject>().SpawnAsPlayerObject(hostId,true);
     }
 
-    public void SpawnCookies()
+
+    public void SpawnCookies(ulong HunterId)
     {
         for (int i = 0; i < SpawnsCookies.childCount; i++)
         {
             Transform spawn = SpawnsCookies.GetChild(i);
             GameObject cookie = Instantiate(CookiePrefab, spawn.position, CookiePrefab.transform.rotation);
-            cookie.GetComponent<NetworkObject>().Spawn(true);
+            cookie.GetComponent<NetworkObject>().Spawn();
+            if (NetworkManager.Singleton.IsHost && NetworkManager.Singleton.LocalClientId == HunterId)
+            {
+                cookie.SetActive(false);
+            }
+            else
+            {
+                cookie.GetComponent<NetworkObject>().NetworkHide(HunterId);
+            }
         }
+
     }
+
+    public void SpawnAmmoCrates(ulong preyId)
+    {
+        for (int i = 0; i < SpawnsCookies.childCount; i++)
+        {
+            Transform spawn = SpawnsCookies.GetChild(i);
+            GameObject cookie = Instantiate(AmmoCratePrefab, spawn.position, AmmoCratePrefab.transform.rotation);
+            cookie.GetComponent<NetworkObject>().Spawn();
+            if (NetworkManager.Singleton.IsHost && NetworkManager.Singleton.LocalClientId == preyId)
+            {
+                cookie.SetActive(false);
+            }
+            else
+            {
+            cookie.GetComponent<NetworkObject>().NetworkHide(preyId);
+            }
+        }
+
+    }
+
 }

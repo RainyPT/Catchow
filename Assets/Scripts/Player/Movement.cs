@@ -1,7 +1,7 @@
 using Unity.Netcode;
 using UnityEngine;
 
-public class Moviment : NetworkBehaviour
+public class Movement : NetworkBehaviour
 {
     public CharacterController characterController;
     public float speed = 12f;
@@ -15,6 +15,7 @@ public class Moviment : NetworkBehaviour
     private bool isGrounded;
     private Animator animator;
     private NetworkVariable<bool> isRunning = new NetworkVariable<bool>(false);
+
     void Start()
     {
         animator = GetComponent<Animator>();

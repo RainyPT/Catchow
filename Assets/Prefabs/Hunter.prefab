@@ -254,6 +254,7 @@ GameObject:
   - component: {fileID: 8479585614449878568}
   - component: {fileID: -7425033765131311154}
   - component: {fileID: 108151493012022481}
+  - component: {fileID: -8436262547934996903}
   m_Layer: 0
   m_Name: Hunter
   m_TagString: Hunter
@@ -437,6 +438,22 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-8436262547934996903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3975132879006422896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68a359e096d9e44478311f1a1cb0a5ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  ShowTopMostFoldoutHeaderGroup: 1
+  playercamera: {fileID: 7194492950379633065}
+  hunter_bullets:
+    m_InternalValue: 2
 --- !u!1 &4878584050811035812
 GameObject:
   m_ObjectHideFlags: 0

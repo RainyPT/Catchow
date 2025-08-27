@@ -7,6 +7,8 @@ TagManager:
   - Prey
   - Hunter
   - SpawnArrays
+  - Ammo
+  - Cookie
   layers:
   - Default
   - TransparentFX

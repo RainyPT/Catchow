@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,11 +11,17 @@ public class GameManager : NetworkBehaviour
     public Camera LoadingCamera;
     public Canvas LoadingCanvas;
 
-    private string[] roles = { "prey", "hunter" };
+    public NetworkVariable<Dictionary<FixedString32Bytes, FixedString32Bytes>> gameInfo = new NetworkVariable<Dictionary<FixedString32Bytes, FixedString32Bytes>>(
+     new Dictionary<FixedString32Bytes, FixedString32Bytes>(),
+     NetworkVariableReadPermission.Owner,
+     NetworkVariableWritePermission.Server
+ );
 
     private void OnEnable()
     {
         if (!NetworkManager.Singleton.IsHost) return;
+
+        gameInfo.Value["hunter_uid"] = NetworkManager.Singleton.LocalClientId.ToString();
         LoadingCanvas.transform.Find("LoadingText").gameObject.SetActive(true);
         
 
@@ -30,12 +38,6 @@ public class GameManager : NetworkBehaviour
     }
     private void HandleClientConnected(ulong clientId)
     {
-        Debug.Log("HandleClientConnected isHost: " + NetworkManager.Singleton.IsHost);
-        ulong hostId = NetworkManager.Singleton.LocalClientId;
-        if (clientId == NetworkManager.Singleton.LocalClientId)
-        {
-            return;
-        }
         if(LoadingCamera != null) {
             LoadingCamera.enabled = false;
         }
@@ -45,11 +47,16 @@ public class GameManager : NetworkBehaviour
         }
 
         //Activate choose perk funct
+        gameInfo.Value["prey_uid"] = clientId.ToString();
+        
         PlayerManager playerManager = GetComponent<PlayerManager>();
-        playerManager.SpawnServerOwner(hostId,roles[0]);
-        playerManager.SpawnClient(clientId, roles[1]);
-        playerManager.SpawnCookies();
+        playerManager.SpawnServerOwner(ulong.Parse(gameInfo.Value["hunter_uid"].ToString()), "");
+        playerManager.SpawnClient(clientId, "");
+
+        playerManager.SpawnCookies(ulong.Parse(gameInfo.Value["hunter_uid"].ToString()));
+        playerManager.SpawnAmmoCrates(clientId);
     }
+
     private void HandleClientDisconnected(ulong clientId)
     {
         if (NetworkManager.Singleton != null)

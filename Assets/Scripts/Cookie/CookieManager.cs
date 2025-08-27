@@ -10,9 +10,9 @@ public class CookieManager : NetworkBehaviour
         
     }
 
+
     void Update()
     {
-        // Rotation Animation
         currentY += rotationSpeed * Time.deltaTime;
         transform.rotation = Quaternion.Euler(
             transform.rotation.eulerAngles.x,
@@ -21,12 +21,5 @@ public class CookieManager : NetworkBehaviour
         );
     }
     
-    private void OnTriggerEnter(Collider other) {
-        if (!IsServer) return;
-        if (other.CompareTag("Prey"))
-        {
-            RoundManager.Instance.AddScore();
-            GetComponent<NetworkObject>().Despawn(true);
-        }
-    }
+    
 }

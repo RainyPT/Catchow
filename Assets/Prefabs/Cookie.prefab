@@ -52,13 +52,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cookie
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ede79cd30d7aee7408c4356c881847fa, type: 3}
+      propertyPath: m_TagString
+      value: Cookie
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ede79cd30d7aee7408c4356c881847fa, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2442922143214969212}
+      addedObject: {fileID: 3813265437043557086}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ede79cd30d7aee7408c4356c881847fa, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6100829650431204132}
@@ -71,7 +75,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: ede79cd30d7aee7408c4356c881847fa, type: 3}
   m_PrefabInstance: {fileID: 2880799600482350411}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2442922143214969212
+--- !u!114 &3813265437043557086
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -83,7 +87,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1973441971
+  GlobalObjectIdHash: 1569282741
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -129,5 +133,5 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.16
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
