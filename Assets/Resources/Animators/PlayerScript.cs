@@ -32,6 +32,8 @@ public class PlayerScript : NetworkBehaviour
 
     void Start()
     {
+        if (!IsOwner) return;
+        if (IsOwner) _playerCamera.gameObject.SetActive(true);
         // Getting Components from our character
         _groundCheck = transform.GetChild(2);
         _playerCrosshair = transform.GetChild(5);
