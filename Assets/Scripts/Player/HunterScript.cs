@@ -1,7 +1,5 @@
-using Unity.Collections.LowLevel.Unsafe;
 using Unity.Netcode;
 using UnityEngine;
-using static UnityEngine.UI.Image;
 
 public class HunterScript : NetworkBehaviour
 {
@@ -9,6 +7,11 @@ public class HunterScript : NetworkBehaviour
     public GameObject crosshair;
     public NetworkVariable<int> hunter_bullets = new NetworkVariable<int>(
     2,
+    NetworkVariableReadPermission.Owner,
+    NetworkVariableWritePermission.Server
+    );
+    public NetworkVariable<float> hunter_shoot_delay = new NetworkVariable<float>(
+    0.5f,
     NetworkVariableReadPermission.Owner,
     NetworkVariableWritePermission.Server
     );
@@ -33,37 +36,20 @@ public class HunterScript : NetworkBehaviour
     }
 
     [Rpc(SendTo.Server)]
-    private void ShootServerRpc()
+    private void ShootServerRpc(bool hasHitPrey)
     {
-        if (hunter_bullets.Value <= 0) return;
+        if (hunter_bullets.Value <= 0 || hunter_shoot_delay.Value>0f) return;
+        hunter_shoot_delay.Value = 0.5f;
         hunter_bullets.Value--;
-        playerScript._playerCamera.transform.localRotation *= Quaternion.Euler(5f, 0f, 0f); // Camera recoil
+        playerScript._playerCamera.transform.localRotation *= Quaternion.Euler(5f, 0f, 0f);
         PlayShootingSoundRpc();
-
-        Vector3 origin = playerScript._playerCamera.transform.position;
-        Vector3 direction = playerScript._playerCamera.transform.forward;
-
-        int layerMask = LayerMask.GetMask("Prey");
-
-        if (Physics.Raycast(origin, direction, out RaycastHit hit, 100, layerMask))
+        if (!hasHitPrey) return;
+        var preyStuff = GameObject.FindGameObjectWithTag("Prey").GetComponent<PreyScript>();
+        if (preyStuff.prey_health != null)
         {
-            //DrawRayDebugRpc(origin, direction);
-            var isPrey = hit.collider.CompareTag("Prey");
-            if (isPrey)
-            {
-
-                var preyStuff = hit.collider.GetComponent<PreyScript>();
-                if (preyStuff.prey_health != null)
-                {
-                    preyStuff.TakeDamage(1);
-                }
-            }
+            preyStuff.TakeDamage(1);
         }
-    }
-    [Rpc(SendTo.ClientsAndHost)]
-    void DrawRayDebugRpc(Vector3 origin, Vector3 direction)
-    {
-        Debug.DrawRay(origin, direction);
+        
     }
 
     [Rpc(SendTo.ClientsAndHost)]
@@ -73,11 +59,19 @@ public class HunterScript : NetworkBehaviour
     }
     void Update()
     {
+        if (IsServer)
+        {
+            hunter_shoot_delay.Value -= Time.deltaTime;
+        }
         if (!IsOwner) return;
 
         if (Input.GetMouseButtonDown(0))
         {
-            ShootServerRpc();
+            int layerMask = LayerMask.GetMask("Prey");
+            Vector3 origin = playerScript._playerCamera.transform.position;
+            Vector3 direction = playerScript._playerCamera.transform.forward;
+            bool hasHitPrey = Physics.Raycast(origin, direction, out RaycastHit hit, 100, layerMask);
+            ShootServerRpc(hasHitPrey);
         }
     }
 
