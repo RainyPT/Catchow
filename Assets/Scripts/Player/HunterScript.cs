@@ -36,8 +36,8 @@ public class HunterScript : NetworkBehaviour
     {
         if (hunter_bullets.Value <= 0) return;
         hunter_bullets.Value--;
-        playerScript._playerCamera.transform.localRotation *= Quaternion.Euler(5f, 0f, 0f);
-        shootSoundSource.Play();
+        playerScript._playerCamera.transform.localRotation *= Quaternion.Euler(5f, 0f, 0f); // Camera recoil
+        PlayShootingSoundRpc(); // Gunshoot Sound
 
         Vector3 origin = crosshair.transform.position;
         Vector3 direction = crosshair.transform.forward;
@@ -56,6 +56,12 @@ public class HunterScript : NetworkBehaviour
                 }
             }
         }
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    private void PlayShootingSoundRpc()
+    {
+        shootSoundSource.Play();
     }
     void Update()
     {
