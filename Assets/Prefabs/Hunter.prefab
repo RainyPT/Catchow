@@ -1011,6 +1011,7 @@ MonoBehaviour:
   crosshair: {fileID: 7514587151898064801}
   hunter_bullets:
     m_InternalValue: 2
+  shootSoundSource: {fileID: 8009292872252457788}
 --- !u!82 &5979831665225711092
 AudioSource:
   m_ObjectHideFlags: 0
