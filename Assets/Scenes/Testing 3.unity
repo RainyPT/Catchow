@@ -2541,6 +2541,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Prey
       objectReference: {fileID: 0}
+    - target: {fileID: 7565406824706338435, guid: 03c9d794b9bb33e4287ea86c9f325f95, type: 3}
+      propertyPath: m_Height
+      value: 2.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565406824706338435, guid: 03c9d794b9bb33e4287ea86c9f325f95, type: 3}
+      propertyPath: m_Radius
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565406824706338435, guid: 03c9d794b9bb33e4287ea86c9f325f95, type: 3}
+      propertyPath: m_Center.y
+      value: 1.11
+      objectReference: {fileID: 0}
     - target: {fileID: 7593612971355592588, guid: 03c9d794b9bb33e4287ea86c9f325f95, type: 3}
       propertyPath: m_LocalPosition.x
       value: -77.6
@@ -2600,7 +2612,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6973066730586901921, guid: eeaaa2dddef1f304a96cdcd6cd7e44e3, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7750307464692258587, guid: eeaaa2dddef1f304a96cdcd6cd7e44e3, type: 3}
       propertyPath: m_LocalPosition.x
