@@ -18,9 +18,12 @@ public class PreyScript : NetworkBehaviour
     );
 
     private Animator _characterAnimator;
+    private PlayerScript p_Script;
 
     private void Start()
     {
+        p_Script = GetComponent<PlayerScript>();
+        _characterAnimator = p_Script._characterAnimator;
         if (!IsOwner) return;
         Ingame_menu_Manager.igm_instance.LoadPreyPanel();
         Ingame_menu_Manager.igm_instance.UpdateHealthUI(5);
@@ -32,7 +35,6 @@ public class PreyScript : NetworkBehaviour
         {
             Ingame_menu_Manager.igm_instance.UpdateCookieCountUI(newValue);
         };
-        _characterAnimator = GetComponent<Animator>();
     }
 
     public NetworkVariable<float> boostingTime = new NetworkVariable<float>(
@@ -46,6 +48,7 @@ public class PreyScript : NetworkBehaviour
    NetworkVariableReadPermission.Owner,
    NetworkVariableWritePermission.Server
    );
+
     public void TakeDamage(int amount)
     {
 
@@ -85,7 +88,7 @@ public class PreyScript : NetworkBehaviour
     void RunBoostRpc()
     {
         isBoosting.Value = true;
-        GetComponent<Movement>().speed.Value += 5f;
+        p_Script._moveSpeed.Value += 5f;
         boostingTime.Value = 5f;
         _characterAnimator.SetBool("isRunning", true);
     }
@@ -93,7 +96,7 @@ public class PreyScript : NetworkBehaviour
     [Rpc(SendTo.Server)]
     void StopRunBoostRpc()
     {
-        GetComponent<Movement>().speed.Value -= 5f;
+        p_Script._moveSpeed.Value -= 5f;
         isBoosting.Value = false;
         boostingTime.Value = 0f;
         _characterAnimator.SetBool("isRunning", false);

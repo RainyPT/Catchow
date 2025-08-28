@@ -1,7 +1,7 @@
 using UnityEngine;
 using Unity.Netcode;
 
-public class CookieManager : NetworkBehaviour
+public class RotatingCookie : NetworkBehaviour
 {
     [SerializeField] private float rotationSpeed = 50f; // Rotation Speed (editable in inspector)
     private float currentY;

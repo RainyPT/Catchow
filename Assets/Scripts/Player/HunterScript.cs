@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class HunterScript : NetworkBehaviour
 {
-    public Camera playercamera;
+    public GameObject crosshair;
     public NetworkVariable<int> hunter_bullets = new NetworkVariable<int>(
     2,
     NetworkVariableReadPermission.Owner,
@@ -36,10 +36,10 @@ public class HunterScript : NetworkBehaviour
         if (hunter_bullets.Value <= 0) return;
         hunter_bullets.Value--;
 
-        Vector3 origin = playercamera.transform.position;
-        Vector3 direction = playercamera.transform.forward;
+        Vector3 origin = crosshair.transform.position;
+        Vector3 direction = crosshair.transform.forward;
 
-        if (Physics.Raycast(origin, direction, out RaycastHit hit, 50))
+        if (Physics.Raycast(origin, direction, out RaycastHit hit, 200))
         {
 
             var isPrey = hit.collider.CompareTag("Prey");
@@ -49,7 +49,6 @@ public class HunterScript : NetworkBehaviour
                 var preyStuff = hit.collider.GetComponent<PreyScript>();
                 if (preyStuff.prey_health != null)
                 {
-
                     preyStuff.TakeDamage(1);
                 }
             }
@@ -67,6 +66,7 @@ public class HunterScript : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        
         if (other.CompareTag("Ammo"))
         {
             AddBulletsServerRpc();

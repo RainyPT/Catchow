@@ -6,7 +6,8 @@ public class PlayerScript : NetworkBehaviour
     [Header("Movement Settings")]
     public NetworkVariable<float> _moveSpeed = new NetworkVariable<float>(5.0f,
     NetworkVariableReadPermission.Everyone,
-    NetworkVariableWritePermission.Owner);
+    NetworkVariableWritePermission.Server);
+
     [SerializeField] private float _crouchSpeed;
     private float _currentSpeed;
     [SerializeField] private float _jumpHeight;
@@ -30,17 +31,19 @@ public class PlayerScript : NetworkBehaviour
     private CharacterController _characterController;
     private float _characterControllerOriginalHeight;
     private Vector3 _characterControllerOriginalCenter;
-    private Animator _characterAnimator;
+    public Animator _characterAnimator;
 
+    private AudioSource footstepsSource;
     void Start()
     {
         _characterAnimator = GetComponent<Animator>();
+        footstepsSource = GetComponent<AudioSource>();
         if (!IsOwner) return;
         _playerCamera.gameObject.SetActive(true);
         // Getting Components from our character
-        _groundCheck = transform.GetChild(2);
-        _playerCrosshair = transform.GetChild(5);
-        _playerBodyAsset = transform.GetChild(0);
+        _groundCheck = transform.Find("GroundCheck");
+        _playerCrosshair = transform.Find("Crosshair");
+        _playerBodyAsset = transform.Find("BodyAsset");
         _characterController = GetComponent<CharacterController>();
 
         // Locking the mouse at the middle and make it invisible, not just fly everywhere like we would be in the Desktop per example
@@ -144,13 +147,14 @@ public class PlayerScript : NetworkBehaviour
     private void UpdateWalkingRpc(bool isWalking)
     {
         _characterAnimator.SetBool("isWalking", isWalking);
-        if (isWalking)
+        if (isWalking == true)
         {
-            GetComponent<AudioSource>().Play();
+            if (!footstepsSource.isPlaying)
+                footstepsSource.Play();
             return;
         }
-
-        GetComponent<AudioSource>().Stop();
+        if (footstepsSource.isPlaying)
+            footstepsSource.Stop();
 
     }
 
