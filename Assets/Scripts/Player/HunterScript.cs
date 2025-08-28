@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class HunterScript : NetworkBehaviour
 {
+    public PlayerScript playerScript;
     public GameObject crosshair;
     public NetworkVariable<int> hunter_bullets = new NetworkVariable<int>(
     2,
     NetworkVariableReadPermission.Owner,
     NetworkVariableWritePermission.Server
     );
+    public AudioSource shootSoundSource;
+
     void Start()
     {
         if (!IsOwner) return;
@@ -19,8 +22,6 @@ public class HunterScript : NetworkBehaviour
         {
             Ingame_menu_Manager.igm_instance.UpdateBulletUI(newValue);
         };
-
-
     }
 
     [ServerRpc]
@@ -35,6 +36,8 @@ public class HunterScript : NetworkBehaviour
     {
         if (hunter_bullets.Value <= 0) return;
         hunter_bullets.Value--;
+        playerScript._playerCamera.transform.localRotation *= Quaternion.Euler(5f, 0f, 0f);
+        shootSoundSource.Play();
 
         Vector3 origin = crosshair.transform.position;
         Vector3 direction = crosshair.transform.forward;

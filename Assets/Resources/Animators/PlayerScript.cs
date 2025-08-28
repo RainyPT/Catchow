@@ -23,7 +23,7 @@ public class PlayerScript : NetworkBehaviour
     private float _cameraPitch;
 
     [Header("Camera Settings")]
-    [SerializeField] private Camera _playerCamera;
+    [SerializeField] public Camera _playerCamera;
     private Transform _playerCrosshair;
     private float _crosshairDistance;
 
