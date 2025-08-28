@@ -1,6 +1,7 @@
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Netcode;
 using UnityEngine;
+using static UnityEngine.UI.Image;
 
 public class HunterScript : NetworkBehaviour
 {
@@ -37,14 +38,16 @@ public class HunterScript : NetworkBehaviour
         if (hunter_bullets.Value <= 0) return;
         hunter_bullets.Value--;
         playerScript._playerCamera.transform.localRotation *= Quaternion.Euler(5f, 0f, 0f); // Camera recoil
-        PlayShootingSoundRpc(); // Gunshoot Sound
+        PlayShootingSoundRpc();
 
-        Vector3 origin = crosshair.transform.position;
-        Vector3 direction = crosshair.transform.forward;
+        Vector3 origin = playerScript._playerCamera.transform.position;
+        Vector3 direction = playerScript._playerCamera.transform.forward;
 
-        if (Physics.Raycast(origin, direction, out RaycastHit hit, 200))
+        int layerMask = LayerMask.GetMask("Prey");
+
+        if (Physics.Raycast(origin, direction, out RaycastHit hit, 100, layerMask))
         {
-
+            //DrawRayDebugRpc(origin, direction);
             var isPrey = hit.collider.CompareTag("Prey");
             if (isPrey)
             {
@@ -56,6 +59,11 @@ public class HunterScript : NetworkBehaviour
                 }
             }
         }
+    }
+    [Rpc(SendTo.ClientsAndHost)]
+    void DrawRayDebugRpc(Vector3 origin, Vector3 direction)
+    {
+        Debug.DrawRay(origin, direction);
     }
 
     [Rpc(SendTo.ClientsAndHost)]
