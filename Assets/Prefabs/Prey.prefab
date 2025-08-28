@@ -940,7 +940,8 @@ MonoBehaviour:
   _gravity: -18
   _mouseSensitivity: 500
   _playerCamera: {fileID: 7313730462665868489}
-  _characterAnimator: {fileID: 0}
+  _characterAnimator: {fileID: 461965403166428535}
+  audioMixer: {fileID: 24100000, guid: eb1993bbd127977418a127d4147979c3, type: 2}
 --- !u!114 &806487305564810498
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -996,7 +997,7 @@ AudioSource:
   m_GameObject: {fileID: 7073534812774108470}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: eb1993bbd127977418a127d4147979c3, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 8b2f43135bf5f00459f18aa851ea437c, type: 3}
   m_PlayOnAwake: 0

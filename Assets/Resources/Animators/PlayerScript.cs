@@ -1,5 +1,6 @@
 using UnityEngine;
 using Unity.Netcode;
+using UnityEngine.Audio;
 
 public class PlayerScript : NetworkBehaviour
 {
@@ -33,6 +34,9 @@ public class PlayerScript : NetworkBehaviour
     private Vector3 _characterControllerOriginalCenter;
     public Animator _characterAnimator;
 
+    public AudioMixer audioMixer;
+    private float savedVolume;
+    private float db;
     private AudioSource footstepsSource;
     void Start()
     {
@@ -40,11 +44,20 @@ public class PlayerScript : NetworkBehaviour
         footstepsSource = GetComponent<AudioSource>();
         if (!IsOwner) return;
         _playerCamera.gameObject.SetActive(true);
+        _playerCamera.fieldOfView = PlayerPrefs.GetFloat("FOV", 60f);
+
+        savedVolume = PlayerPrefs.GetFloat("MasterVolume", 0.5f);
+        db = (savedVolume <= 0.0001f) ? -80f : Mathf.Log10(savedVolume) * 20f;
+        audioMixer.SetFloat("MasterVolume", db);
+        
         // Getting Components from our character
         _groundCheck = transform.Find("GroundCheck");
         _playerCrosshair = transform.Find("Crosshair");
         _playerBodyAsset = transform.Find("BodyAsset");
         _characterController = GetComponent<CharacterController>();
+
+        // Setting up our sensitivity according to what the player selected before (or just leave it as is)
+        _mouseSensitivity = PlayerPrefs.GetFloat("Sensitivity", 300f);
 
         // Locking the mouse at the middle and make it invisible, not just fly everywhere like we would be in the Desktop per example
         Cursor.lockState = CursorLockMode.Locked;
@@ -123,6 +136,8 @@ public class PlayerScript : NetworkBehaviour
         }
 
         // Mouse
+        _mouseSensitivity = PlayerPrefs.GetFloat("Sensitivity", 300f); // Never forget this in case player changes sens in-game
+
         float mouseX = Input.GetAxis("Mouse X") * _mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * _mouseSensitivity * Time.deltaTime;
         if (Ingame_menu_Manager.isOpen)
@@ -139,7 +154,12 @@ public class PlayerScript : NetworkBehaviour
         Vector3 crosshairPos = _playerCamera.transform.position + _playerCamera.transform.forward * _crosshairDistance;
         _playerCrosshair.position = crosshairPos; // Crosshair movement
 
+        // Camera FOV
+        _playerCamera.fieldOfView = PlayerPrefs.GetFloat("FOV", 60f); // Never forget this in case player changes fov in-game
 
+        savedVolume = PlayerPrefs.GetFloat("MasterVolume", 0.5f);
+        db = (savedVolume <= 0.0001f) ? -80f : Mathf.Log10(savedVolume) * 20f;
+        audioMixer.SetFloat("MasterVolume", db);
     }
 
 
