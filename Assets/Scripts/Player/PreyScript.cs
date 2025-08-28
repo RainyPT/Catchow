@@ -16,10 +16,20 @@ public class PreyScript : NetworkBehaviour
     NetworkVariableReadPermission.Owner,
     NetworkVariableWritePermission.Server
     );
-
+    public GameObject extractions;
     private Animator _characterAnimator;
     private PlayerScript p_Script;
 
+    [Rpc(SendTo.ClientsAndHost)]
+    private void UnlockExtractionsRpc()
+    {
+        GameObject extractionPoints = GameObject.Find("ExtractionPoints");
+        int extractionCount = extractionPoints.transform.childCount;
+        for (int i = 0; i < extractionCount; i++) {
+            extractionPoints.transform.GetChild(i).GetComponent<Light>().color = Color.lightGreen;
+        }
+
+    }
     private void Start()
     {
         p_Script = GetComponent<PlayerScript>();
@@ -34,6 +44,10 @@ public class PreyScript : NetworkBehaviour
         prey_score.OnValueChanged += (oldValue, newValue) =>
         {
             Ingame_menu_Manager.igm_instance.UpdateCookieCountUI(newValue);
+            if (prey_score.Value >= 10)
+            {
+                UnlockExtractionsRpc();
+            }
         };
     }
 
@@ -87,6 +101,7 @@ public class PreyScript : NetworkBehaviour
 
     void RunBoostRpc()
     {
+        if (isBoosting.Value) return;
         isBoosting.Value = true;
         p_Script._moveSpeed.Value += 5f;
         boostingTime.Value = 5f;
@@ -96,6 +111,7 @@ public class PreyScript : NetworkBehaviour
     [Rpc(SendTo.Server)]
     void StopRunBoostRpc()
     {
+        if (!isBoosting.Value) return;
         p_Script._moveSpeed.Value -= 5f;
         isBoosting.Value = false;
         boostingTime.Value = 0f;
