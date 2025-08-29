@@ -71,9 +71,10 @@ public class PreyScript : NetworkBehaviour
         {
             GameManager.instance.EndGameRpc("Prey died!");
         }
-
-        RunBoostRpc();
-        
+        isBoosting.Value = true;
+        boostingTime.Value = 5f;
+        p_Script._moveSpeed.Value = 10f;
+        StartRunningAnimationRpc();
     }
 
     private void Update()
@@ -88,33 +89,25 @@ public class PreyScript : NetworkBehaviour
             {
                 if (isBoosting.Value == true)
                 {
-                    StopRunBoostRpc();
+                    p_Script._moveSpeed.Value = 5f;
                     isBoosting.Value = false;
+                    boostingTime.Value = 0f;
+                    StopRunningAnimationRpc();
                 }
             }
             
         }
     }
 
-
-
-
-    void RunBoostRpc()
+    [Rpc(SendTo.ClientsAndHost)]
+    void StartRunningAnimationRpc()
     {
-        if (isBoosting.Value) return;
-        isBoosting.Value = true;
-        p_Script._moveSpeed.Value += 5f;
-        boostingTime.Value = 5f;
         _characterAnimator.SetBool("isRunning", true);
     }
 
-    [Rpc(SendTo.Server)]
-    void StopRunBoostRpc()
-    {
-        if (!isBoosting.Value) return;
-        p_Script._moveSpeed.Value -= 5f;
-        isBoosting.Value = false;
-        boostingTime.Value = 0f;
+    [Rpc(SendTo.ClientsAndHost)]
+    void StopRunningAnimationRpc()
+    {        
         _characterAnimator.SetBool("isRunning", false);
     }
 
