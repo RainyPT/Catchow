@@ -10,6 +10,7 @@ public class PlayButtonScript : MonoBehaviour
         GetComponent<Button>().onClick.AddListener(ChangeToPlayPanel);
     }
 
+
     private void ChangeToPlayPanel()
     {
         this.transform.parent.gameObject.SetActive(false);

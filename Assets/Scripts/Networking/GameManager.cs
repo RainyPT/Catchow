@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
@@ -32,8 +33,9 @@ public class GameManager : NetworkBehaviour
         if (!NetworkManager.Singleton.IsHost) return;
         gameInfo.Value["hunter_uid"] = "";
         gameInfo.Value["prey_uid"] = "";
-        LoadingCanvas.transform.Find("LoadingText").gameObject.SetActive(true);
-        
+        LoadingCanvas.gameObject.SetActive(true);
+        LoadingCanvas.transform.Find("JoinCode").GetComponent<TextMeshProUGUI>().text = "Code: " + JoinCodeInfo.joinCode;
+
 
         NetworkManager.Singleton.OnClientConnectedCallback += HandleClientConnected;
         
@@ -82,7 +84,7 @@ public class GameManager : NetworkBehaviour
     {
         if (LoadingCanvas != null)
         {
-            LoadingCanvas.transform.Find("LoadingText").gameObject.SetActive(false);
+            LoadingCanvas.gameObject.SetActive(false);
         }
 
         ChoosingRoleMenuRPC();
@@ -191,6 +193,8 @@ public class GameManager : NetworkBehaviour
 
 
         PlayerManager playerManager = GetComponent<PlayerManager>();
+        //sOMEONE Didn't choose a role and ruined everyhting.
+        if (gameInfo.Value["hunter_uid"].ToString() == "" || gameInfo.Value["prey_uid"].ToString() == "") Disconnect();
         playerManager.SpawnHunterServerRpc(ulong.Parse(gameInfo.Value["hunter_uid"].ToString()));
         playerManager.SpawnPreyServerRpc(ulong.Parse(gameInfo.Value["prey_uid"].ToString()));
 
